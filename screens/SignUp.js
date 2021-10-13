@@ -10,9 +10,13 @@ import {
 } from "react-native";
 // Icon Package: https://oblador.github.io/react-native-vector-icons/
 import Icon from "react-native-vector-icons/AntDesign";
+
 import "../assets/images/logo2.png";
 import "../assets/images/logo.png";
 import { firebase } from "../Firebase/firebase";
+
+import SignUpSuccess from "../components/SignUpSuccess";
+import SignUpError from "../components/SignUpError";
 
 const SignUp = ({ navigation }) => {
   // State Variable
@@ -20,6 +24,8 @@ const SignUp = ({ navigation }) => {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [displaySignUpMessage, setDisplaySignUpMessage] = useState(false);
 
   const navigate = () => {
     navigation.navigate("Sign In");
@@ -49,10 +55,28 @@ const SignUp = ({ navigation }) => {
 
   // Create User in firebase
   const createUser = () => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(emailAddress, password)
-      .then(() => {});
+    firebase.auth().createUserWithEmailAndPassword(emailAddress, password);
+  };
+
+  const validateUserInput = () => {
+    let userInputs = [fullName, emailAddress, password, confirmPassword];
+    let isPasswordMatch = password === confirmPassword;
+    // User pass in empty string
+    if (userInputs.includes("") || userInputs.includes(undefined)) {
+      // TODO: Print for user input testing
+      console.log(userInputs);
+      setDisplaySignUpMessage(true);
+      return;
+    }
+    if (isPasswordMatch) {
+      createUser();
+    } else {
+      // TODO: Print for password testing
+      console.log(userInputs);
+      console.log("Passwords are inconsistent!");
+
+      setDisplaySignUpMessage(true);
+    }
   };
 
   return (
@@ -99,11 +123,14 @@ const SignUp = ({ navigation }) => {
             value={confirmPassword}
             onChangeText={confirmPasswordChange}
           />
-          <TouchableOpacity style={styles.button} onPress={createUser}>
+          <TouchableOpacity style={styles.button} onPress={validateUserInput}>
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
+      {displaySignUpMessage === true ? (
+        <SignUpError hideSignUpError={setDisplaySignUpMessage} />
+      ) : null}
     </View>
   );
 };
