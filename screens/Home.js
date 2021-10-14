@@ -7,10 +7,35 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   TextInput,
+  Image,
 } from "react-native";
+import Icon from "react-native-vector-icons/SimpleLineIcons";
 
-const Home = () => {
-  const customData = require("../data.json");
+const Home = ({ navigation }) => {
+  // const customData = require("../data.json");
+  const customData = [
+    {
+      partId: 1,
+      partName: "Altus",
+      partThumbnail: 'require("../assets/images/altusThumbnail.png")',
+      partImage: 'require("../assets/images/altus.jpg")',
+      partVideo_url: 'require("../assets/videos/Altus.mp4")',
+    },
+    {
+      partId: 2,
+      partName: "Cantus",
+      partThumbnail: 'require("../assets/images/cantusThumbnail.png")',
+      partImage: 'require("../assets/images/cantus.jpg")',
+      partVideo_url: 'require("../assets/videos/Cantus.mp4")',
+    },
+    {
+      partId: 3,
+      partName: "Bassus",
+      partThumbnail: 'require("../assets/images/bassusThumbnail.png")',
+      partImage: 'require("../assets/images/bassus.jpg")',
+      partVideo_url: 'require("../assets/videos/Bassus.mp4")',
+    },
+  ];
   const [searchPart, setSearchPart] = useState("");
   const [feed, setFeed] = useState([]);
 
@@ -43,7 +68,28 @@ const Home = () => {
             }}
             renderItem={({ item, index }) => (
               <View style={styles.partConent}>
-                <Text>{item.partName}</Text>
+                <View style={styles.partNameOuter}>
+                  <View style={styles.imageView}>
+                    <TouchableOpacity
+                      style={styles.thumbnailButton}
+                      onPress={() =>
+                        navigation.navigate("Player", { data: item })
+                      }
+                    >
+                      <Image
+                        style={styles.partThumbnail}
+                        source={require("../assets/images/altusThumbnail.png")}
+                        // BUG: 1.why require does not work for each item? 2.How to link with google drive(JSON)
+                        // source={item.partThumbnail}
+                        // source={{ uri: item.partThumbnail }}
+                      />
+                    </TouchableOpacity>
+
+                    <Text style={styles.partName}>{item.partName}</Text>
+                  </View>
+
+                  <Icon style={styles.optionsIcon} name="options-vertical" />
+                </View>
               </View>
             )}
           />
@@ -80,11 +126,44 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   partsContent: {
-    width: "90%",
+    width: "100%",
   },
   partConent: {
     width: "100%",
-    marginBottom: 20,
+    marginTop: 20,
+    alignItems: "center",
+  },
+  partNameOuter: {
+    width: "80%",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+  partThumbnail: {
+    backgroundColor: "rgba(0,0,0,0.06)",
+    width: "100%",
+    height: "100%",
+    borderRadius: 50,
+  },
+  imageView: {
+    flexDirection: "row",
+  },
+  partName: {
+    fontSize: 21,
+    fontWeight: "bold",
+    paddingLeft: 20,
+    paddingVertical: 32,
+    color: "#58555A",
+    alignItems: "center",
+  },
+  optionsIcon: {
+    paddingVertical: 36,
+    color: "#58555A",
+    alignItems: "center",
+  },
+  thumbnailButton: {
+    backgroundColor: "#e8e8db",
+    width: 80,
+    height: 80,
   },
 });
 

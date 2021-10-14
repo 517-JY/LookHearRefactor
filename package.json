@@ -21,10 +21,13 @@
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
     "react-native-vector-icons": "^8.1.0",
-    "react-native-web": "^0.17.5"
+    "react-native-video": "^5.2.0-alpha1",
+    "react-native-web": "^0.17.5",
+    "expo-av": "~9.2.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0"
+    "@babel/core": "^7.9.0",
+    "@types/react-native-video": "^5.0.9"
   },
   "private": true
 }

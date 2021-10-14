@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,10 +8,41 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+
 import "../assets/images/logo2.png";
 import "../assets/images/logo.png";
 
+import SignUpError from "../components/SignUpError";
+import SignUpSuccess from "../components/SignUpSuccess";
+
+import { firebase } from "../Firebase/firebase";
+
 const SignIn = ({ navigation }) => {
+  const [emailAddress, setEmailAddress] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [disPlaySignInMessage, setDisPlaySignInMessage] = useState(false);
+
+  const emailAddressChange = (emailAddress) => {
+    setEmailAddress(emailAddress);
+  };
+
+  const passwordChange = (password) => {
+    setPassword(password);
+  };
+
+  const validateSignIn = () => {
+    let userSignIn = [emailAddress, password];
+
+    // User pass in empty string
+    if (userSignIn.includes("") || userSignIn.includes(undefined)) {
+      // TODO: Print for user sign intesting
+      console.log(userSignIn);
+      setDisplaySignUpMessage(true);
+      return;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.UpperView}>
@@ -23,13 +54,20 @@ const SignIn = ({ navigation }) => {
       <View style={styles.BottomView}>
         <Text style={styles.BottomViewHeader}>Sign In{"\n"}Your Account</Text>
         <View style={styles.form}>
-          <TextInput style={styles.textInput} placeholder={"Email Address"} />
+          <TextInput
+            style={styles.textInput}
+            placeholder={"Email Address"}
+            value={emailAddress}
+            onChangeText={emailAddressChange}
+          />
           <TextInput
             style={styles.textInput}
             placeholder={"Password"}
             secureTextEntry={true}
+            value={password}
+            onChangeText={passwordChange}
           />
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={validateSignIn}>
             <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
         </View>
@@ -41,6 +79,12 @@ const SignIn = ({ navigation }) => {
             New to LookHear? Create your account
           </Text>
         </TouchableOpacity>
+        {/* {displaySignInMessage === true ? (
+          <SignUpError
+            hideSignUpError={setDisplaySignUpMessage}
+            err={errorMessage}
+          />
+        ) : null} */}
       </View>
     </View>
   );
