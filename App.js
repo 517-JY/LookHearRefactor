@@ -35,7 +35,7 @@ export default function App() {
   };
 
   // A state variable determine whether a user is signin or not
-  const [issignIn, setIsSignIn] = useState(false);
+  const [issignIn, setIsSignIn] = useState(true);
 
   // useEffect(()=>{
   //   firebase.auth().onAuthStateChanged()

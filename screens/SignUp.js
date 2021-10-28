@@ -25,7 +25,11 @@ const SignUp = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [displaySignUpMessage, setDisplaySignUpMessage] = useState(false);
+  const [signUpSuccessMessage, setSignUpSuccessMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [signUpErrorMessage, setSignUpErrorMessage] = useState("");
+  const [displaySignUpError, setDisplaySignUpError] = useState(false);
 
   const navigate = () => {
     navigation.navigate("Sign In");
@@ -55,17 +59,35 @@ const SignUp = ({ navigation }) => {
 
   // Create User in firebase
   const createUser = () => {
-    firebase.auth().createUserWithEmailAndPassword(emailAddress, password);
+    setIsLoading(true);
+    // Use email and password to create a new user
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(emailAddress, password)
+      .then(() => {
+        setIsLoading(false);
+        setSignUpSuccessMessage("Your account has been created successfully!");
+      })
+      .catch((error) => {
+        // Say if a user creates an account that already exists
+        setIsLoading(false);
+        console.log(error);
+        setSignUpErrorMessage(error.message);
+        setDisplaySignUpError(true);
+      });
   };
 
+  // Check whether user sign up info is valid
   const validateUserInput = () => {
     let userInputs = [fullName, emailAddress, password, confirmPassword];
+    // passwords should match
     let isPasswordMatch = password === confirmPassword;
     // User pass in empty string
     if (userInputs.includes("") || userInputs.includes(undefined)) {
       // TODO: Print for user input testing
       console.log(userInputs);
-      setDisplaySignUpMessage(true);
+      setSignUpErrorMessage("Please fill in all fields.");
+      setDisplaySignUpError(true);
       return;
     }
     if (isPasswordMatch) {
@@ -74,8 +96,8 @@ const SignUp = ({ navigation }) => {
       // TODO: Print for password testing
       console.log(userInputs);
       console.log("Passwords are inconsistent!");
-
-      setDisplaySignUpMessage(true);
+      setSignUpErrorMessage("Passwords are inconsistent.");
+      setDisplaySignUpError(true);
     }
   };
 
@@ -128,8 +150,21 @@ const SignUp = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      {displaySignUpMessage === true ? (
-        <SignUpError hideSignUpError={setDisplaySignUpMessage} />
+      {displaySignUpError === true ? (
+        <SignUpError
+          hideSignUpError={setDisplaySignUpError}
+          errorMessage={signUpErrorMessage}
+        />
+      ) : null}
+
+      {isLoading === true ? (
+        <SignUpSuccess />
+      ) : signUpSuccessMessage ===
+        "Your account has been created successfully!" ? (
+        <SignUpSuccess
+          successMessage={signUpSuccessMessage}
+          hideSignUpSuccess={setSignUpSuccessMessage("")}
+        />
       ) : null}
     </View>
   );

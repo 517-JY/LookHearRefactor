@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Component } from "react";
 import {
   View,
   Text,
@@ -31,7 +31,7 @@ const Player = ({ navigation, route }) => {
     <View style={styles.main}>
       <View
         style={{
-          height: screen.height / 3,
+          height: screen.height / 4,
           width: "100%",
           backgroundColor: "#a7a79d",
         }}
@@ -62,7 +62,7 @@ const Player = ({ navigation, route }) => {
       <Text style={styles.partName}>{partData.partName}</Text>
       <View
         style={{
-          height: (2 * screen.height) / 3,
+          height: (3 * screen.height) / 4,
           width: "100%",
         }}
       >
@@ -83,9 +83,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#e8e8db",
   },
   partName: {
-    fontSize: 21,
+    fontSize: 18,
     fontWeight: "bold",
-    marginTop: 10,
+    // marginTop: 10,
     color: "#58555A",
     alignItems: "center",
   },
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   note: {
     width: "100%",
-    height: "100%",
+    height: "90%",
   },
 });
 
