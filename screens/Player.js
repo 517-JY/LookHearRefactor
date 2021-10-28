@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect, Component, useRef } from "react";
 import {
   View,
   Text,
@@ -6,10 +6,41 @@ import {
   Dimensions,
   Button,
   Image,
+  ImageBackground,
+  Animated,
 } from "react-native";
 import { Video, AVPlaybackStatus } from "expo-av";
 
 const screen = Dimensions.get("screen");
+
+// FIXME: ugly hard code needs to be replaced
+// Data from aluts.js
+const position = new Animated.ValueXY({
+  x: 0.3016710642040457 * screen.width,
+  y: ((3 * screen.height) / 4) * 0.02,
+});
+
+// const position = React.useRef(
+//   new Animated.ValueXY({
+//     x: 0.3016710642040457 * screen.width,
+//     y: ((3 * screen.height) / 4) * 0.02,
+//   }).current
+// );
+
+Animated.timing(position, {
+  toValue: {
+    x: 0.8865435356200527 * screen.width,
+    y: ((3 * screen.height) / 4) * 0.02,
+  },
+
+  // FIXME : Duration not correct just for testing
+  duration: (27427 - 1061) / 5,
+  useNativeDriver: true,
+}).start(({ finished }) => {
+  if (finished) {
+    // Do something?
+  }
+});
 
 const Player = ({ navigation, route }) => {
   useEffect(() => {
@@ -66,10 +97,17 @@ const Player = ({ navigation, route }) => {
           width: "100%",
         }}
       >
-        <Image
+        <ImageBackground
+          source={require("../assets/images/altus.jpg")}
+          resizeMode="center"
+          style={styles.note}
+        >
+          <Animated.View style={styles.movebar}></Animated.View>
+        </ImageBackground>
+        {/* <Image
           style={styles.note}
           source={require("../assets/images/altus.jpg")}
-        />
+        /> */}
       </View>
     </View>
   );
@@ -98,7 +136,13 @@ const styles = StyleSheet.create({
   },
   note: {
     width: "100%",
-    height: "90%",
+    height: "95%",
+  },
+  movebar: {
+    height: 55,
+    width: 10,
+    backgroundColor: "rgba(20,0,250,0.25)",
+    transform: [{ translateX: position.x }, { translateY: position.y }],
   },
 });
 
