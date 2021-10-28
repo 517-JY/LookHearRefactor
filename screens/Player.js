@@ -5,9 +5,11 @@ import {
   StyleSheet,
   Dimensions,
   Button,
+  TouchableOpacity,
   Image,
   ImageBackground,
   Animated,
+  PanResponder,
 } from "react-native";
 import { Video, AVPlaybackStatus } from "expo-av";
 
@@ -27,20 +29,22 @@ const position = new Animated.ValueXY({
 //   }).current
 // );
 
-Animated.timing(position, {
-  toValue: {
-    x: 0.8865435356200527 * screen.width,
-    y: ((3 * screen.height) / 4) * 0.02,
-  },
+function moveBar() {
+  Animated.timing(position, {
+    toValue: {
+      x: 0.8865435356200527 * screen.width,
+      y: ((3 * screen.height) / 4) * 0.02,
+    },
 
-  // FIXME : Duration not correct just for testing
-  duration: (27427 - 1061) / 5,
-  useNativeDriver: true,
-}).start(({ finished }) => {
-  if (finished) {
-    // Do something?
-  }
-});
+    // FIXME : Duration not correct just for testing
+    duration: (27427 - 1061) / 5,
+    useNativeDriver: true,
+  }).start(({ finished }) => {
+    if (finished) {
+      // Do something?
+    }
+  });
+}
 
 const Player = ({ navigation, route }) => {
   useEffect(() => {
@@ -57,6 +61,25 @@ const Player = ({ navigation, route }) => {
   const [partData, setPartData] = useState(route.params.data);
   const video = React.useRef(null);
   const [videoStatus, setVideoStatus] = React.useState({});
+  const [isAnimated, setIsAnimated] = useState(false);
+
+  const pan = useRef(new Animated.ValueXY()).current;
+
+  const panResponder = useState(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        pan.setOffset({
+          x: pan.x._value,
+          y: pan.y._value,
+        });
+      },
+      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }]),
+      onPanResponderRelease: () => {
+        pan.flattenOffset();
+      },
+    })
+  )[0];
 
   return (
     <View style={styles.main}>
@@ -90,7 +113,10 @@ const Player = ({ navigation, route }) => {
           /> */}
         </View>
       </View>
-      <Text style={styles.partName}>{partData.partName}</Text>
+      {/* <Text style={styles.partName}>{partData.partName}</Text> */}
+      <TouchableOpacity onPress={moveBar}>
+        <Text>Click me to move the ball</Text>
+      </TouchableOpacity>
       <View
         style={{
           height: (3 * screen.height) / 4,
@@ -102,7 +128,17 @@ const Player = ({ navigation, route }) => {
           resizeMode="center"
           style={styles.note}
         >
-          <Animated.View style={styles.movebar}></Animated.View>
+          <Animated.View style={[styles.bar, styles.movebar]}></Animated.View>
+          <Animated.View
+            style={[
+              {
+                transform: [{ translateX: pan.x }, { translateY: pan.y }],
+              },
+            ]}
+            {...panResponder.panHandlers}
+          >
+            <View style={styles.bar}></View>
+          </Animated.View>
         </ImageBackground>
         {/* <Image
           style={styles.note}
@@ -138,10 +174,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "95%",
   },
-  movebar: {
+  bar: {
     height: 55,
     width: 10,
     backgroundColor: "rgba(20,0,250,0.25)",
+  },
+  movebar: {
     transform: [{ translateX: position.x }, { translateY: position.y }],
   },
 });
