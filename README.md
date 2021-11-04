@@ -11,10 +11,12 @@ We aim to provide a unified experience to the user; they can register accounts, 
 
 The in the front page of the app, the user can choose the instrument.
 
-![frontpage](https://user-images.githubusercontent.com/44303703/140256060-b02d776f-39a3-4628-91a1-0f4f05050f55.png)
+![frontpage_ipad](https://user-images.githubusercontent.com/44303703/140256652-e62109ff-59de-40ed-ab51-910d00b5e221.png)
 
 After they choose the instrument, they are directed to the main page of the app, in this page, the users are shown with one video and one sheet music.
 
 ![sheetpage](https://user-images.githubusercontent.com/44303703/140256513-1f87c473-c537-4fc2-bbc1-24cc1f9b36b8.png)
+
+Since our app is mainly designed for musicians with large-screen devices, the sample screenshots are captured from tablet view. 
 
 # Node.js
