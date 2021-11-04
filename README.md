@@ -14,6 +14,7 @@ The in the front page of the app, the user can choose the instrument.
 ![frontpage_ipad](https://user-images.githubusercontent.com/44303703/140256652-e62109ff-59de-40ed-ab51-910d00b5e221.png)
 
 After they choose the instrument, they are directed to the main page of the app, in this page, the users are shown with one video and one sheet music.
+The purple bar on the music sheets represent the part that the note the musician is current playing in the video.
 
 ![sheetpage](https://user-images.githubusercontent.com/44303703/140256513-1f87c473-c537-4fc2-bbc1-24cc1f9b36b8.png)
 
