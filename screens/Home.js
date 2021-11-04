@@ -10,6 +10,8 @@ import {
   Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
+import { firebase } from "../Firebase/firebase";
+import { doc, onSnapshot, collection, query, where} from "firebase/firestore";
 
 const Home = ({ navigation }) => {
   // const customData = require("../data.json");
@@ -38,13 +40,42 @@ const Home = ({ navigation }) => {
   ];
   const [searchPart, setSearchPart] = useState("");
   const [feed, setFeed] = useState([]);
+  const [temp, setTemp] = useState([]);
 
   // Set manual feeds
   // FIXME: feeds manually created (link with DB)
+  // Update has already linked to dataabse, dummy data has already been stored in firebase, and the function works properly 
   useEffect(() => {
-    // TODO: print for testing
+    // TODO: make sure that all properties in fetched data can work fine with all the frontend tags
     // console.log(customData);
     setFeed(customData);
+    const db = firebase.firestore()
+    var curInfoList = []
+    async function fetchVideo(db) {
+      await db.collection('videos').get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          //need to retrieve every property of each doc, and make them as a whole object, so that we can make a list of object and set it as feed
+          const curInfo = doc.data()
+          curInfoList.push(curInfo)
+        })
+      })
+      console.log(curInfoList)
+      setTemp(curInfoList)
+      //await setTempFunc(curInfoList)
+    }
+    // const Ref = db.collection("videos").doc("videoTest1");
+    // const doc = await Ref.get();
+    // if (!doc.exists) {
+    //   console.log("no such doc")
+    // } else {
+    //   console.log(doc.data())
+    // }
+    // function setTempFunc(curInfoList) {
+    //   return new Promise(resolve => {
+    //       setTemp(curInfoList, () => resolve());
+    //   });
+    // }
+    fetchVideo(db)
   }, []);
 
   return (
