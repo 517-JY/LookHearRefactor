@@ -9,10 +9,12 @@ LookHear is a JavaScript application that helps the musicians to track the notes
 
 We aim to provide a unified experience to the user; they can register accounts, upload their sheet music and their own practice videos. Each user's data are stored in the Firebase backend. 
 
+## Front Page 
 The in the front page of the app, the user can choose the instrument.
 
 ![frontpage_ipad](https://user-images.githubusercontent.com/44303703/140256652-e62109ff-59de-40ed-ab51-910d00b5e221.png)
 
+## Main Page
 After they choose the instrument, they are directed to the main page of the app, in this page, the users are shown with one video and one sheet music.
 The purple bar on the music sheets represent the part that the note the musician is current playing in the video.
 
