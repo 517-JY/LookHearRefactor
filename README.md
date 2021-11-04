@@ -5,5 +5,16 @@ This repository is a refactored version of the LookHear project. https://github.
 
 # Tool for musicians
 
+LookHear is a JavaScript application that helps the musicians to track the notes on the sheet music while the video that correspond to the music sheet plays. It provides a synced experience so that musicians can practice the specific part of the music once they found imperfections in their video recordings. 
+
+We aim to provide a unified experience to the user; they can register accounts, upload their sheet music and their own practice videos. Each user's data are stored in the Firebase backend. 
+
+The in the front page of the app, the user can choose the instrument.
+
+![frontpage](https://user-images.githubusercontent.com/44303703/140256060-b02d776f-39a3-4628-91a1-0f4f05050f55.png)
+
+After they choose the instrument, they are directed to the main page of the app, in this page, the users are shown with one video and one sheet music.
+
+![sheetpage](https://user-images.githubusercontent.com/44303703/140256513-1f87c473-c537-4fc2-bbc1-24cc1f9b36b8.png)
 
 # Node.js
