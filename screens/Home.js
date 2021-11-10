@@ -16,29 +16,29 @@ import { WebView } from 'react-native-webview';
 
 const Home = ({ navigation }) => {
   // const customData = require("../data.json");
-  const customData = [
-    {
-      partId: 1,
-      partName: "Altus",
-      partThumbnail: 'require("../assets/images/altusThumbnail.png")',
-      partImage: 'require("../assets/images/altus.jpg")',
-      partVideo_url: 'require("../assets/videos/Altus.mp4")',
-    },
-    {
-      partId: 2,
-      partName: "Cantus",
-      partThumbnail: 'require("../assets/images/cantusThumbnail.png")',
-      partImage: 'require("../assets/images/cantus.jpg")',
-      partVideo_url: 'require("../assets/videos/Cantus.mp4")',
-    },
-    {
-      partId: 3,
-      partName: "Bassus",
-      partThumbnail: 'require("../assets/images/bassusThumbnail.png")',
-      partImage: 'require("../assets/images/bassus.jpg")',
-      partVideo_url: 'require("../assets/videos/Bassus.mp4")',
-    },
-  ];
+  // const customData = [
+  //   {
+  //     partId: 1,
+  //     partName: "Altus",
+  //     partThumbnail: 'require("../assets/images/altusThumbnail.png")',
+  //     partImage: 'require("../assets/images/altus.jpg")',
+  //     partVideo_url: 'require("../assets/videos/Altus.mp4")',
+  //   },
+  //   {
+  //     partId: 2,
+  //     partName: "Cantus",
+  //     partThumbnail: 'require("../assets/images/cantusThumbnail.png")',
+  //     partImage: 'require("../assets/images/cantus.jpg")',
+  //     partVideo_url: 'require("../assets/videos/Cantus.mp4")',
+  //   },
+  //   {
+  //     partId: 3,
+  //     partName: "Bassus",
+  //     partThumbnail: 'require("../assets/images/bassusThumbnail.png")',
+  //     partImage: 'require("../assets/images/bassus.jpg")',
+  //     partVideo_url: 'require("../assets/videos/Bassus.mp4")',
+  //   },
+  // ];
   const [searchPart, setSearchPart] = useState("");
   const [feed, setFeed] = useState([]);
   const [temp, setTemp] = useState([]);
@@ -49,7 +49,7 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     // TODO: make sure that all properties in fetched data can work fine with all the frontend tags
     // console.log(customData);
-    setFeed(customData);
+    // setFeed(customData);
     const db = firebase.firestore()
     var curInfoList = []
     async function fetchVideo(db) {
@@ -92,7 +92,7 @@ const Home = ({ navigation }) => {
         value={searchPart}
       />
       <View style={styles.partsContent}>
-        {feed.length < 1 ? (
+        {temp.length < 1 ? (
           <ActivityIndicator size={"large"} color={"black"} />
         ) : (
           <FlatList
