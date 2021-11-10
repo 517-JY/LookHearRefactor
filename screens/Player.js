@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component, useRef } from "react";
+import React, { useState, useEffect, Component, useRef, useCallback} from "react";
 import {
   View,
   Text,
@@ -10,8 +10,10 @@ import {
   ImageBackground,
   Animated,
   PanResponder,
+  Alert,
 } from "react-native";
 import { Video, AVPlaybackStatus } from "expo-av";
+
 
 const screen = Dimensions.get("screen");
 
@@ -50,6 +52,7 @@ const Player = ({ navigation, route }) => {
   useEffect(() => {
     let playPart = route.params.data;
     // TODO : print for testing
+    console.log("***********************************")
     console.log(screen);
     console.log(screen.width, screen.height);
     console.log(playPart);
@@ -81,6 +84,13 @@ const Player = ({ navigation, route }) => {
     })
   )[0];
 
+  const onStateChange = useCallback((state) => {
+    if (state === "ended") {
+      setPlaying(false);
+      Alert.alert("video has finished playing!");
+    }
+  }, []);
+
   return (
     <View style={styles.main}>
       <View
@@ -94,7 +104,9 @@ const Player = ({ navigation, route }) => {
           ref={video}
           style={styles.video}
           // BUG: same problem with source
-          source={require("../assets/videos/Altus.mp4")}
+          //source={require("../assets/videos/Altus.mp4")}
+          source={{uri: 'https://www.youtube.com/watch?v=RYNVZqpytHM'}}
+          //source={{uri: partData.url}}
           useNativeControls
           resizeMode="contain"
           isLooping
@@ -102,6 +114,19 @@ const Player = ({ navigation, route }) => {
             setVideoStatus(() => videoStatus)
           }
         />
+        {/* <WebView
+          allowsFullscreenVideo
+          allowsInlineMediaPlayback
+          mediaPlaybackRequiresUserAction
+          source={{ uri: 'https://www.youtube.com/watch?v=RYNVZqpytHM' }} 
+        /> */}
+        {/* <YoutubePlayer
+          style={styles.video}
+          //height={300}
+          play={playing}
+          videoId={"RYNVZqpytHM"}
+          onChangeState={onStateChange}
+        /> */}
         <View style={styles.buttons}>
           {/* <Button
             title={videoStatus.isPlaying ? "Pause" : "Play"}
@@ -124,7 +149,8 @@ const Player = ({ navigation, route }) => {
         }}
       >
         <ImageBackground
-          source={require("../assets/images/altus.jpg")}
+          //source={require("../assets/images/altus.jpg")}
+          source={{uri: partData.sheet}}
           resizeMode="center"
           style={styles.note}
         >

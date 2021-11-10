@@ -19,8 +19,8 @@ if (!firebase.apps.length) {
   // If not
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore()
-  db.settings({timeStampInSnapshots: true})
+  // const db = firebase.firestore()
+  // db.settings({timeStampInSnapshots: true})
 }
 
 // const analytics = getAnalytics(app);

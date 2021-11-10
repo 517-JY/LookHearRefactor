@@ -12,6 +12,7 @@ import {
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import { firebase } from "../Firebase/firebase";
 import { doc, onSnapshot, collection, query, where} from "firebase/firestore";
+import { WebView } from 'react-native-webview';
 
 const Home = ({ navigation }) => {
   // const customData = require("../data.json");
@@ -61,6 +62,7 @@ const Home = ({ navigation }) => {
       })
       console.log(curInfoList)
       setTemp(curInfoList)
+      
       //await setTempFunc(curInfoList)
     }
     // const Ref = db.collection("videos").doc("videoTest1");
@@ -76,6 +78,7 @@ const Home = ({ navigation }) => {
     //   });
     // }
     fetchVideo(db)
+
   }, []);
 
   return (
@@ -93,7 +96,8 @@ const Home = ({ navigation }) => {
           <ActivityIndicator size={"large"} color={"black"} />
         ) : (
           <FlatList
-            data={feed}
+            //data={feed}
+            data = {temp}
             keyExtractor={(item, index) => {
               return item.partId.toString();
             }}
@@ -109,10 +113,10 @@ const Home = ({ navigation }) => {
                     >
                       <Image
                         style={styles.partThumbnail}
-                        source={require("../assets/images/altusThumbnail.png")}
+                        //source={require("../assets/images/altusThumbnail.png")}
                         // BUG: 1.why require does not work for each item? 2.How to link with google drive(JSON)
-                        // source={item.partThumbnail}
-                        // source={{ uri: item.partThumbnail }}
+                        //source={{uri: 'https://engineering.fb.com/wp-content/uploads/2016/04/yearinreview.jpg'}} 
+                        source={{ uri: item.partThumbnail }}
                       />
                     </TouchableOpacity>
 
