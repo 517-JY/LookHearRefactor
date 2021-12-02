@@ -32,6 +32,8 @@ const position = new Animated.ValueXY({
 // TODO: Set speed factor only for testing purpose
 const speed = 10;
 
+const animationAltus = [];
+
 // const position = React.useRef(
 //   new Animated.ValueXY({
 //     x: 0.3016710642040457 * screen.width,
@@ -97,14 +99,25 @@ const Player = ({ navigation, route }) => {
     if (videoStatus.isPlaying) {
       Animated.sequence([
         // First Line
-        Animated.timing(position, {
-          toValue: {
-            x: 0.8865435356200527 * screen.width,
-            y: ((3 * screen.height) / 4) * yCoord,
-          },
-          duration: (27427 - 1061) / speed,
-          useNativeDriver: true,
-        }),
+        Animated.stagger((1061 - 0) / speed, [
+          Animated.timing(position, {
+            toValue: {
+              x: 0.3016710642040457 * screen.width,
+              y: ((3 * screen.height) / 4) * yCoord,
+            },
+            duration: 0,
+            useNativeDriver: true,
+          }),
+
+          Animated.timing(position, {
+            toValue: {
+              x: 0.8865435356200527 * screen.width,
+              y: ((3 * screen.height) / 4) * yCoord,
+            },
+            duration: (27427 - 1061) / speed,
+            useNativeDriver: true,
+          }),
+        ]),
         // Second Line
         Animated.stagger((28453 - 27427) / speed, [
           Animated.timing(position, {
