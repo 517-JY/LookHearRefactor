@@ -22,4 +22,8 @@ The purple bar on the music sheets represent the part that the note the musician
 
 Since our app is mainly designed for musicians with large-screen devices, the sample screenshots are captured from tablet view. 
 
-# Node.js
+## Firebase Integration
+
+We recently added the integration for LookHear project with Firebase so that user data can be saved on server.
+
+
