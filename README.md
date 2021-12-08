@@ -24,6 +24,9 @@ Since our app is mainly designed for musicians with large-screen devices, the sa
 
 ## Firebase Integration
 
-We recently added the integration for LookHear project with Firebase so that user data can be saved on server.
+![微信图片_20211208154217](https://user-images.githubusercontent.com/44303703/145281397-447ddc54-9947-4fab-8773-3c320a5af5d3.png)
 
+
+We recently added the integration for LookHear project with Firebase so that user data can be saved on server.
+This enables users to upload their own video along with the sheet music and thumbnail to the database so they can access on any platform.
 
