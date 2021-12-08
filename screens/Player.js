@@ -100,34 +100,17 @@ const Player = ({ navigation, route }) => {
           backgroundColor: "#a7a79d",
         }}
       >
-        <Video
-          ref={video}
-          style={styles.video}
-          // BUG: same problem with source
-          //source={require("../assets/videos/Altus.mp4")}
-          //source={{uri: 'https://www.youtube.com/watch?v=RYNVZqpytHM'}}
-          // source={{uri: 'https://firebasestorage.googleapis.com/v0/b/lookhearrefactor.appspot.com/o/Cantus.mp4?alt=media&token=d9f3ba13-66fe-43ad-9be2-35249b4dbf56'}}
-          source={{uri: partData.url}}
-          useNativeControls
-          resizeMode="contain"
-          isLooping
-          onPlaybackStatusUpdate={(videoStatus) =>
-            setVideoStatus(() => videoStatus)
-          }
-        />
-        {/* <WebView
-          allowsFullscreenVideo
-          allowsInlineMediaPlayback
-          mediaPlaybackRequiresUserAction
-          source={{ uri: 'https://www.youtube.com/watch?v=RYNVZqpytHM' }} 
-        /> */}
-        {/* <YoutubePlayer
-          style={styles.video}
-          //height={300}
-          play={playing}
-          videoId={"RYNVZqpytHM"}
-          onChangeState={onStateChange}
-        /> */}
+          <Video
+            ref={video}
+            style={styles.video}
+            source={{uri: partData.url}}
+            useNativeControls
+            resizeMode="contain"
+            isLooping
+            onPlaybackStatusUpdate={(videoStatus) =>
+              setVideoStatus(() => videoStatus)
+            }
+          />
         <View style={styles.buttons}>
           {/* <Button
             title={videoStatus.isPlaying ? "Pause" : "Play"}
