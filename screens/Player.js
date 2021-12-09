@@ -29,18 +29,6 @@ const position = new Animated.ValueXY({
   y: ((3 * screen.height) / 4) * 0.02,
 });
 
-// TODO: Set speed factor only for testing purpose
-const speed = 10;
-
-const animationAltus = [];
-
-// const position = React.useRef(
-//   new Animated.ValueXY({
-//     x: 0.3016710642040457 * screen.width,
-//     y: ((3 * screen.height) / 4) * 0.02,
-//   }).current
-// );
-
 const Player = ({ navigation, route }) => {
   useEffect(() => {
     let playPart = route.params.data;
@@ -54,11 +42,49 @@ const Player = ({ navigation, route }) => {
 
   // const { screenWidth, screenHeight } = Dimensions.get("screen");
 
+  // TODO: Set speed factor only for testing purpose
+  const speed = 10;
+
   const [partData, setPartData] = useState(route.params.data);
   const video = React.useRef(null);
   const [videoStatus, setVideoStatus] = React.useState({});
   const [isAnimated, setIsAnimated] = useState(false);
   const [yCoord, setYCoord] = useState(0.2 * 0.08742304309586632);
+
+  // From Zhiwei
+
+  // Animation Coords
+  const Lag = [
+    { start: 0, end: 1061, x: 0.3016710642040457, y: yCoord },
+    {
+      start: 27427,
+      end: 28453,
+      x: 0.09586631486367635,
+      y: (0.08742304309586632 + 0.052594547053649965) * 0.75,
+    },
+    {
+      start: 50193,
+      end: 50707,
+      x: 0.09410729991204925,
+      y: (0.08742304309586632 + 0.18856640281442394 * 0.9) * 0.75,
+    },
+  ];
+  //
+  const Mov = [
+    { start: 1061, end: 27427, x: 0.8865435356200527, y: yCoord },
+    {
+      start: 28453,
+      end: 50193,
+      x: 0.8962181178540017,
+      y: (0.08742304309586632 + 0.052594547053649965) * 0.75,
+    },
+    {
+      start: 50707,
+      end: 68876,
+      x: 0.8944591029023746,
+      y: (0.08742304309586632 + 0.18856640281442394 * 0.9) * 0.75,
+    },
+  ];
 
   const pan = useRef(new Animated.ValueXY()).current;
 
@@ -99,11 +125,12 @@ const Player = ({ navigation, route }) => {
     if (videoStatus.isPlaying) {
       Animated.sequence([
         // First Line
-        Animated.stagger((1061 - 0) / speed, [
+
+        Animated.stagger((Lag[0].end - Lag[0].start) / speed, [
           Animated.timing(position, {
             toValue: {
-              x: 0.3016710642040457 * screen.width,
-              y: ((3 * screen.height) / 4) * yCoord,
+              x: Lag[0].x * screen.width,
+              y: ((3 * screen.height) / 4) * Lag[0].y,
             },
             duration: 0,
             useNativeDriver: true,
@@ -111,22 +138,37 @@ const Player = ({ navigation, route }) => {
 
           Animated.timing(position, {
             toValue: {
-              x: 0.8865435356200527 * screen.width,
-              y: ((3 * screen.height) / 4) * yCoord,
+              x: Mov[0].x * screen.width,
+              y: ((3 * screen.height) / 4) * Mov[0].y,
             },
-            duration: (27427 - 1061) / speed,
+            duration: (Mov[0].end - Mov[0].start) / speed,
             useNativeDriver: true,
           }),
+
+          // Animated.timing(position, {
+          //   toValue: {
+          //     x: Lag[0].x * screen.width,
+          //     y: ((3 * screen.height) / 4) * Lag[0].y,
+          //   },
+          //   duration: 0,
+          //   useNativeDriver: true,
+          // }),
+
+          // Animated.timing(position, {
+          //   toValue: {
+          //     x: Mov[0].x * screen.width,
+          //     y: ((3 * screen.height) / 4) * Mov[0].y,
+          //   },
+          //   duration: (Mov[0].end - Mov[0].start) / speed,
+          //   useNativeDriver: true,
+          // }),
         ]),
         // Second Line
-        Animated.stagger((28453 - 27427) / speed, [
+        Animated.stagger((Lag[1].end - Lag[1].start) / speed, [
           Animated.timing(position, {
             toValue: {
-              x: 0.09586631486367635 * screen.width,
-              y:
-                ((3 * screen.height) / 4) *
-                (0.08742304309586632 + 0.052594547053649965) *
-                0.75,
+              x: Lag[1].x * screen.width,
+              y: ((3 * screen.height) / 4) * Lag[1].y,
             },
             duration: 0,
             useNativeDriver: true,
@@ -134,26 +176,20 @@ const Player = ({ navigation, route }) => {
 
           Animated.timing(position, {
             toValue: {
-              x: 0.8962181178540017 * screen.width,
-              y:
-                ((3 * screen.height) / 4) *
-                (0.08742304309586632 + 0.052594547053649965) *
-                0.75,
+              x: Mov[1].x * screen.width,
+              y: ((3 * screen.height) / 4) * Mov[1].y,
             },
-            duration: (50193 - 28453) / speed,
+            duration: (Mov[1].end - Mov[1].start) / speed,
             useNativeDriver: true,
           }),
         ]),
 
         // Third Line
-        Animated.stagger((50707 - 50193) / speed, [
+        Animated.stagger((Lag[2].end - Lag[2].start) / speed, [
           Animated.timing(position, {
             toValue: {
-              x: 0.09410729991204925 * screen.width,
-              y:
-                ((3 * screen.height) / 4) *
-                (0.08742304309586632 + 0.18856640281442394 * 0.9) *
-                0.75,
+              x: Lag[2].x * screen.width,
+              y: ((3 * screen.height) / 4) * Lag[2].y,
             },
             duration: 0,
             useNativeDriver: true,
@@ -161,13 +197,10 @@ const Player = ({ navigation, route }) => {
 
           Animated.timing(position, {
             toValue: {
-              x: 0.8944591029023746 * screen.width,
-              y:
-                ((3 * screen.height) / 4) *
-                (0.08742304309586632 + 0.18856640281442394 * 0.9) *
-                0.75,
+              x: Mov[2].x * screen.width,
+              y: ((3 * screen.height) / 4) * Mov[2].y,
             },
-            duration: (68876 - 50707) / speed,
+            duration: (Mov[2].end - Mov[2].start) / speed,
             useNativeDriver: true,
           }),
         ]),
@@ -408,7 +441,7 @@ const Player = ({ navigation, route }) => {
           videoId={"RYNVZqpytHM"}
           onChangeState={onStateChange}
         /> */}
-        {/* <View style={styles.buttons}>
+        <View style={(styles.buttons, { position: "fixed", zIndex: 999 })}>
           <Button
             title={videoStatus.isPlaying ? "Pause" : "Play"}
             onPress={() =>
@@ -417,7 +450,7 @@ const Player = ({ navigation, route }) => {
                 : video.current.playAsync()
             }
           />
-        </View> */}
+        </View>
       </View>
       {/* <Text style={styles.partName}>{partData.partName}</Text> */}
       <TouchableOpacity onPress={moveBar}>
