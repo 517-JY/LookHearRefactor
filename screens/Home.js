@@ -8,48 +8,32 @@ import {
   ActivityIndicator,
   TextInput,
   Image,
+  Button,
 } from "react-native";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import { firebase } from "../Firebase/firebase";
-import { doc, onSnapshot, collection, query, where} from "firebase/firestore";
+import { onSnapshot, collection, query, where} from "firebase/firestore";
 import { WebView } from 'react-native-webview';
+import storage from '@react-native-firebase/storage';
+import 'firebase/storage';
+import { doc, setDoc } from "firebase/firestore";
 
 const Home = ({ navigation }) => {
-  // const customData = require("../data.json");
-  // const customData = [
-  //   {
-  //     partId: 1,
-  //     partName: "Altus",
-  //     partThumbnail: 'require("../assets/images/altusThumbnail.png")',
-  //     partImage: 'require("../assets/images/altus.jpg")',
-  //     partVideo_url: 'require("../assets/videos/Altus.mp4")',
-  //   },
-  //   {
-  //     partId: 2,
-  //     partName: "Cantus",
-  //     partThumbnail: 'require("../assets/images/cantusThumbnail.png")',
-  //     partImage: 'require("../assets/images/cantus.jpg")',
-  //     partVideo_url: 'require("../assets/videos/Cantus.mp4")',
-  //   },
-  //   {
-  //     partId: 3,
-  //     partName: "Bassus",
-  //     partThumbnail: 'require("../assets/images/bassusThumbnail.png")',
-  //     partImage: 'require("../assets/images/bassus.jpg")',
-  //     partVideo_url: 'require("../assets/videos/Bassus.mp4")',
-  //   },
-  // ];
   const [searchPart, setSearchPart] = useState("");
   const [feed, setFeed] = useState([]);
   const [temp, setTemp] = useState([]);
 
+  const [thumbnailUrl, setThumbnailUrl] = useState(null);
+  const [videoUrl, setVideoUrl] = useState(null);
+  const [sheetUrl, setSheetUrl] = useState(null);
+  const [newName, setNewName] = useState('');
+  const [id, setId] = useState(3);
+
   // Set manual feeds
   // FIXME: feeds manually created (link with DB)
-  // Update has already linked to dataabse, dummy data has already been stored in firebase, and the function works properly 
+  // Update has already linked to database, dummy data has already been stored in firebase, and the function works properly 
   useEffect(() => {
     // TODO: make sure that all properties in fetched data can work fine with all the frontend tags
-    // console.log(customData);
-    // setFeed(customData);
     const db = firebase.firestore()
     var curInfoList = []
     async function fetchVideo(db) {
@@ -62,24 +46,68 @@ const Home = ({ navigation }) => {
       })
       console.log(curInfoList)
       setTemp(curInfoList)
-      
-      //await setTempFunc(curInfoList)
     }
-    // const Ref = db.collection("videos").doc("videoTest1");
-    // const doc = await Ref.get();
-    // if (!doc.exists) {
-    //   console.log("no such doc")
-    // } else {
-    //   console.log(doc.data())
-    // }
-    // function setTempFunc(curInfoList) {
-    //   return new Promise(resolve => {
-    //       setTemp(curInfoList, () => resolve());
-    //   });
-    // }
     fetchVideo(db)
-
   }, []);
+
+  const selectThumbnailImage = async (e) => {
+    console.log("selectThumbnailImage")
+    const file = e.target.files[0]
+    var storageRef = firebase.storage().ref();
+    const fileRef = storageRef.child(file.name)
+    await fileRef.put(file)
+    const ThumbnailUrl = await fileRef.getDownloadURL()
+    setThumbnailUrl(ThumbnailUrl)
+    console.log('thumbnailImage url: ', ThumbnailUrl)
+  }
+
+  const selectVideo = async (e) => {
+    console.log("selectVideo")
+    const file = e.target.files[0]
+    var storageRef = firebase.storage().ref();
+    const fileRef = storageRef.child(file.name)
+    await fileRef.put(file)
+    const VideoUrl = await fileRef.getDownloadURL()
+    setVideoUrl(VideoUrl)
+    console.log('video url: ', VideoUrl)
+  }
+
+  const selectSheetImage = async (e) => {
+    console.log("selectSheetImage")
+    const file = e.target.files[0]
+    var storageRef = firebase.storage().ref();
+    const fileRef = storageRef.child(file.name)
+    await fileRef.put(file)
+    const SheetUrl = await fileRef.getDownloadURL()
+    setSheetUrl(SheetUrl)
+    console.log('sheetImage url: ', SheetUrl)
+  }
+
+  const createNew = () => {
+    const db = firebase.firestore()
+    // await setDoc(doc(db, "videos", newName), {
+    //   partName: newName,
+    //   partThumbnail: thumbnailUrl,
+    //   sheet: sheetUrl,
+    //   url: videoUrl,
+    // })
+    console.log("ready to create")
+    db.collection("videos").doc(newName).set({
+      partId: id,
+      partName: newName,
+      partThumbnail: thumbnailUrl,
+      sheet: sheetUrl,
+      url: videoUrl,
+    }).then(() => {
+      console.log("a new doc has been created!")
+    })
+    .catch((error) => {
+      console.log("Error writing new doc: ", error);
+    });
+    const newId = id + 1;
+    setId(newId);
+    //window.location.reload();
+  }
 
   return (
     <View style={styles.mainView}>
@@ -113,9 +141,7 @@ const Home = ({ navigation }) => {
                     >
                       <Image
                         style={styles.partThumbnail}
-                        //source={require("../assets/images/altusThumbnail.png")}
                         // BUG: 1.why require does not work for each item? 2.How to link with google drive(JSON)
-                        //source={{uri: 'https://engineering.fb.com/wp-content/uploads/2016/04/yearinreview.jpg'}} 
                         source={{ uri: item.partThumbnail }}
                       />
                     </TouchableOpacity>
@@ -129,6 +155,36 @@ const Home = ({ navigation }) => {
             )}
           />
         )}
+      </View>
+      <View style={{alignItems: 'flex-start'}}>
+        <View style={styles.upload}>
+          <Text style={{fontSize: 20, marginRight: 10}}>Upload thumbnail image:</Text>
+          <input type='file' onChange={selectThumbnailImage}/>
+        </View>
+        <View style={styles.upload}>
+          <Text style={{fontSize: 20, marginRight: 10}}>Upload video:</Text>
+          <input type='file' onChange={selectVideo}/>
+        </View>
+        <View style={styles.upload}>
+          <Text style={{fontSize: 20, marginRight: 10}}>Upload sheet image:</Text>
+          <input type='file' onChange={selectSheetImage}/>
+        </View>
+        <View style={styles.upload}>
+          <Text style={{fontSize: 20}}>Give it a name: </Text>
+          <TextInput style={{borderWidth: 1.0}} placeholder='Name it' onChangeText={text => setNewName(text)}></TextInput>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <View style={styles.upload1, {minWidth: 150, marginRight: 10}}>
+            {/* {(thumbnailUrl != null && videoUrl != null && sheetUrl != null && newName != '') ?  */}
+              <Button color='green' title='create new set' onPress={createNew}/> 
+            {/* : null} */}
+          </View>
+          <View style={{marginTop: 4}}>
+            {/* {(thumbnailUrl != null && videoUrl != null && sheetUrl != null && newName != '') ?  */}
+              <Text style={{fontSize: 17}}>Please refresh this page after clicking this</Text> 
+            {/* : null} */}
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -200,6 +256,14 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
   },
+  upload: {
+    flexDirection: 'row', 
+    marginBottom: 15
+  },
+  upload1: {
+    flexDirection: 'column',
+    marginBottom: 10,
+  }
 });
 
 export default Home;

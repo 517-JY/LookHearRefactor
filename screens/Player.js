@@ -441,15 +441,27 @@ const Player = ({ navigation, route }) => {
           videoId={"RYNVZqpytHM"}
           onChangeState={onStateChange}
         /> */}
-        <View style={(styles.buttons, { position: "fixed", zIndex: 999 })}>
-          <Button
+
+        {/* // <Video
+          //   ref={video}
+          //   style={styles.video}
+          //   source={{uri: partData.url}}
+          //   useNativeControls
+          //   resizeMode="contain"
+          //   isLooping
+          //   onPlaybackStatusUpdate={(videoStatus) =>
+          //     setVideoStatus(() => videoStatus)
+          //   }
+          // /> */}
+        <View style={styles.buttons}>
+          {/* <Button
+
             title={videoStatus.isPlaying ? "Pause" : "Play"}
             onPress={() =>
               videoStatus.isPlaying
                 ? video.current.pauseAsync()
                 : video.current.playAsync()
-            }
-          />
+            }/> */}
         </View>
       </View>
       {/* <Text style={styles.partName}>{partData.partName}</Text> */}
