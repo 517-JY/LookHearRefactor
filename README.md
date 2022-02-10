@@ -18,7 +18,8 @@ The in the front page of the app, the user can choose the instrument.
 After they choose the instrument, they are directed to the main page of the app, in this page, the users are shown with one video and one sheet music.
 The purple bar on the music sheets represent the part that the note the musician is current playing in the video.
 
-![sheetpage](https://user-images.githubusercontent.com/44303703/140256513-1f87c473-c537-4fc2-bbc1-24cc1f9b36b8.png)
+![Screen Shot 2021-12-09 at 1 30 37 PM](https://user-images.githubusercontent.com/64394513/145454908-10e78c79-067c-4740-90ee-908d7be1887b.png)
+
 
 Since our app is mainly designed for musicians with large-screen devices, the sample screenshots are captured from tablet view. 
 
