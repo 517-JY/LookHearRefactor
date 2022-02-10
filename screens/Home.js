@@ -62,6 +62,7 @@ const Home = ({ navigation }) => {
   // }, [id]);
 
   //add some comments
+  //this is a test for cs103a quiz3
 
   const selectThumbnailImage = async (e) => {
     console.log("selectThumbnailImage")
