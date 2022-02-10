@@ -28,6 +28,9 @@ const Home = ({ navigation }) => {
   const [sheetUrl, setSheetUrl] = useState(null);
   const [newName, setNewName] = useState('');
   const [id, setId] = useState(3);
+  const [thumbnailDone, setThumbnailDone] = useState(false);
+  const [videoDone, setVideoDone] = useState(false);
+  const [sheetDone, setSheetDone] = useState(false);
 
   // Set manual feeds
   // FIXME: feeds manually created (link with DB)
@@ -50,6 +53,14 @@ const Home = ({ navigation }) => {
     fetchVideo(db)
   }, []);
 
+  // useEffect(() => {
+  //   setId(JSON.parse(window.sessionStorage.getItem("id")));
+  // }, []);
+
+  // useEffect(() => {
+  //   window.sessionStorage.setItem("count", id);
+  // }, [id]);
+
   const selectThumbnailImage = async (e) => {
     console.log("selectThumbnailImage")
     const file = e.target.files[0]
@@ -58,6 +69,7 @@ const Home = ({ navigation }) => {
     await fileRef.put(file)
     const ThumbnailUrl = await fileRef.getDownloadURL()
     setThumbnailUrl(ThumbnailUrl)
+    setThumbnailDone(true);
     console.log('thumbnailImage url: ', ThumbnailUrl)
   }
 
@@ -69,6 +81,7 @@ const Home = ({ navigation }) => {
     await fileRef.put(file)
     const VideoUrl = await fileRef.getDownloadURL()
     setVideoUrl(VideoUrl)
+    setVideoDone(true);
     console.log('video url: ', VideoUrl)
   }
 
@@ -80,6 +93,7 @@ const Home = ({ navigation }) => {
     await fileRef.put(file)
     const SheetUrl = await fileRef.getDownloadURL()
     setSheetUrl(SheetUrl)
+    setSheetDone(true);
     console.log('sheetImage url: ', SheetUrl)
   }
 
@@ -113,11 +127,10 @@ const Home = ({ navigation }) => {
     <View style={styles.mainView}>
       {/* // FIXME: piece name hard code */}
       <Text style={styles.header}>zirlerMotet</Text>
-
       <TextInput
         style={styles.textInput}
         placeholder={"Search your part"}
-        value={searchPart}
+        // value={searchPart}
       />
       <View style={styles.partsContent}>
         {temp.length < 1 ? (
@@ -145,10 +158,8 @@ const Home = ({ navigation }) => {
                         source={{ uri: item.partThumbnail }}
                       />
                     </TouchableOpacity>
-
                     <Text style={styles.partName}>{item.partName}</Text>
                   </View>
-
                   <Icon style={styles.optionsIcon} name="options-vertical" />
                 </View>
               </View>
@@ -160,14 +171,17 @@ const Home = ({ navigation }) => {
         <View style={styles.upload}>
           <Text style={{fontSize: 20, marginRight: 10}}>Upload thumbnail image:</Text>
           <input type='file' onChange={selectThumbnailImage}/>
+          {thumbnailDone ? <Text style={{fontSize: 15,marginLeft: 10}}>Upload Successful!</Text> : null}
         </View>
         <View style={styles.upload}>
           <Text style={{fontSize: 20, marginRight: 10}}>Upload video:</Text>
           <input type='file' onChange={selectVideo}/>
+          {videoDone ? <Text style={{fontSize: 15,marginLeft: 10}}>Upload Successful!</Text> : null}
         </View>
         <View style={styles.upload}>
           <Text style={{fontSize: 20, marginRight: 10}}>Upload sheet image:</Text>
           <input type='file' onChange={selectSheetImage}/>
+          {sheetDone ? <Text style={{fontSize: 15,marginLeft: 10}}>Upload Successful!</Text> : null}
         </View>
         <View style={styles.upload}>
           <Text style={{fontSize: 20}}>Give it a name: </Text>
@@ -175,14 +189,14 @@ const Home = ({ navigation }) => {
         </View>
         <View style={{flexDirection: 'row'}}>
           <View style={styles.upload1, {minWidth: 150, marginRight: 10}}>
-            {/* {(thumbnailUrl != null && videoUrl != null && sheetUrl != null && newName != '') ?  */}
+            {(thumbnailUrl != null && videoUrl != null && sheetUrl != null && newName != '') ? 
               <Button color='green' title='create new set' onPress={createNew}/> 
-            {/* : null} */}
+            : null}
           </View>
           <View style={{marginTop: 4}}>
-            {/* {(thumbnailUrl != null && videoUrl != null && sheetUrl != null && newName != '') ?  */}
+            {(thumbnailUrl != null && videoUrl != null && sheetUrl != null && newName != '') ? 
               <Text style={{fontSize: 17}}>Please refresh this page after clicking this</Text> 
-            {/* : null} */}
+            : null}
           </View>
         </View>
       </View>
