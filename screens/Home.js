@@ -61,6 +61,8 @@ const Home = ({ navigation }) => {
   //   window.sessionStorage.setItem("count", id);
   // }, [id]);
 
+  //add some comments
+
   const selectThumbnailImage = async (e) => {
     console.log("selectThumbnailImage")
     const file = e.target.files[0]
